@@ -152,7 +152,7 @@ The command output confirms the policy refresh is processing:
 <img width="973" height="612" alt="2 6 1" src="https://github.com/user-attachments/assets/49cef2f4-5fde-45ef-8b0e-3a9f60060812" />  
 **Account Lockout Policy is now active across the domain.**  
 
-### Phase 3 - Trigger the Account Lockout on the Client  
+### Phase 3: Trigger the Account Lockout on the Client  
 **Goal**: Reproduce the business scenario by entering the wrong password on the Windows 11 client until the account locks.  
 
 #### Step 3.1 - Attempt Login with Wrong Password (x3)  
@@ -164,7 +164,7 @@ After the 3rd failed attempt, Windows displays the lockout message:
 <img width="1012" height="695" alt="3 1" src="https://github.com/user-attachments/assets/849e2481-7190-483a-aa73-ff0a3c23db7d" />
   
 
-### Phase 4 - Investigate and Resolve on the Domain Controller  
+### Phase 4: Investigate and Resolve on the Domain Controller  
 **Goal:** As the help desk/IT admin, locate the affected account, confirm the lock state, reset the password, and unlock the account.  
 
 #### Step 4.1 - Locate the User in ADUC  
