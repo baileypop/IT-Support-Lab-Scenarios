@@ -189,6 +189,71 @@ The **Unlock account** checkbox is visible, confirming the account is locked.
 
 Close Properites. Right-click **Bill Black** again and select **Reset Password**.  
 
+<img width="756" height="527" alt="4 3" src="https://github.com/user-attachments/assets/53474814-ae05-41e8-bb3c-d9dda7fecb57" />  
+
+#### Step 4.4 - Set Temporary Password, Unlock Account, and Force Change  
+
+In the Reset Password dialog:
+1. Enter a temporary password
+2. Confirm the temporary password
+3. Check "User must change password at next logon"
+4. Check "Unlock the user's account"
+5. Click OK
+
+<img width="381" height="256" alt="4 4" src="https://github.com/user-attachments/assets/cb58e4a4-0dfd-43bc-8553-1f49df06db89" />
+
+Password reset and account unlock are applied in a single action.  
+
+### Phase 5: Validate the fix on the client  
+Goal: Confirm the user can sign in with the temporary password and is prompted to set a new one.  
+
+#### Step 5.1 - Sign In with Temporary Password  
+
+On the Windows 11 client, sign in as ``bblack@mylab.local`` using the temporary password set in Step 4.4.
+
+Windows immediately prompts the user to change their password before continuing:
+
+<img width="1013" height="628" alt="5 1" src="https://github.com/user-attachments/assets/3e88a90e-b012-4a32-82e6-c337d1b08b7c" />  
+
+<img width="1013" height="587" alt="5 1 1" src="https://github.com/user-attachments/assets/ff420e1e-d88c-4e93-af32-63f51a1d4700" />  
+
+#### Step 5.2 - Set a New Permanent Password  
+
+The user enters a new permanent password that meets the domain complexity requirements and confirms it.  
+
+<img width="1005" height="603" alt="5 2" src="https://github.com/user-attachments/assets/d7b012c2-d3b2-4ec5-bf01-0597b9573e95" />  
+
+#### Step 5.3 - AD Confirms Password Change  
+
+Active Directory Domain Services displays a final confirmation dialog:  
+
+<img width="1015" height="583" alt="5 3" src="https://github.com/user-attachments/assets/b41196da-25ac-4b2f-909a-568d88570074" />  
+
+User can now sign in with their new permanent password. Issue fully resolved.  
+
+
+## Key Learning Points  
+
+1. Account lockouts are policy driven. The account lockout threshold GPO setting controls how many failed attempts trigger a lock.
+2. ADUC is the central tool for viewing account state, resetting passwords, unlocking accounts, and checking account options.
+3. "User must change password at next logon" is a security best practice.
+4. ``gpupdate /force`` is essential in a lab. It ensures the policy takes immediate effect which is critical in both lab and urgent real-world deployments.
+
+
+## Troubleshooting Reference  
+| Symptom | Cause | Resolution |
+| --- | --- | --- |
+|"Unlock account" checkbox not visible | Account is not locked- it may be disabled | Check if account is disabled instead of right-click -> Enable Account |
+| GPO not applying after configuration | Policy hasn't propagated yet | Run ``gpupdate /force`` on the domain controller |
+| User not found in Users container | Account may be in a different OU | Use ADUC FInd (ctrl+f) to search the whole domain |
+| Lockout happening immediately on login | Clock skew between DC and client | Check time sync ``w32tm /query /status`` |
+| Password reset dialog greys out "Unlock" | Account not currently locked | No unlock needed- just reset the password |
+| New password rejected by domain | Doesn't meet complexity requirements | Remind user: 8+ characters, uppercase, lowercase, number, symbol |  
+
+
+
+
+
 
 
 
