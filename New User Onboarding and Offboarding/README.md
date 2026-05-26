@@ -74,6 +74,65 @@ OFFBOARDING WORKFLOW
   Offboarding complete — access fully removed, device secured
 ```
 
+## Onboarding Workflow  
+
+### Phase 1: Receive and Log Onboarding Request  
+#### Step 1.1 - Review the onboarding ticket  
+
+The onboarding ticket is received from HR with all the required info. Before any provisioning, I have confirmed the ticket contains a start date, department, manager name, required applications, and hardware requirements.  
+
+<img width="482" height="391" alt="1 1" src="https://github.com/user-attachments/assets/f9edec8e-df0f-46f8-9f37-e632ea79b765" />  
+
+### Phase 2: Create the Active Directory User Account
+
+#### Step 2.1 - Create the User Account in ADUC
+
+Open Active Directory Users and Computers on the domain controller. Navigate to the appropriate Organisational Unit (in this lab, [domain]/Users). Right-click and select New > User. Complete all required fields following the organization's naming convention.  
+
+<img width="434" height="374" alt="2 1" src="https://github.com/user-attachments/assets/3497231e-78e0-4ff3-864e-03f89425467e" />  
+
+
+
+### Phase 3: Create the Department Security Group and Assign Membership  
+
+#### Step 3.1 - Create the Finance_Department Security Group  
+
+Navigate to the Users container in ADUC. Right-click and select New > Group. Create a Global Security group named Finance_Department.  
+
+<img width="432" height="374" alt="3 1" src="https://github.com/user-attachments/assets/021b2682-938f-40bc-84b8-6ca01bacbe0d" />
+
+
+#### Step 3.2 - Add Danita Widmar to the Finance_Department Group  
+
+Open Danita Widmar's account properties and navigate to the Member Of tab. Click Add and search for Finance_Department.  
+
+<img width="456" height="248" alt="3 2" src="https://github.com/user-attachments/assets/4ad4f14d-2ff6-4b84-a037-3a9324ab0f0d" />  
+
+
+#### Step 3.3 - Confirm Group Membership  
+
+Return to the Member Of tab on Danita Widmar's account properties and confirm both group memberships are present: Domain Users (default) and Finance_Department (newly assigned).  
+
+<img width="407" height="536" alt="3 3" src="https://github.com/user-attachments/assets/c198e495-8820-4aae-8a5c-b976efb05bc0" />  
+
+
+### Phase 4: Join the Device to the Domain  
+
+#### Step 4.1 - Configure Domain Join on WIN11_CLIENT01 
+
+
+On the Windows 11 client machine, open System Properties (sysdm.cpl) and click Change. Select Domain and enter [domain]. Provide domain administrator credentials when prompted.
+
+<img width="322" height="388" alt="4 1" src="https://github.com/user-attachments/assets/5b932349-5ecb-47bf-bc02-462c1b050b60" />  
+
+
+#### Step 4.2 - Confirm Domain Join in System Properties  
+
+After the restart, open System Properties and confirm the machine shows the full computer name and domain.  
+
+<img width="407" height="465" alt="4 2" src="https://github.com/user-attachments/assets/0b59249b-58c0-417b-a698-cc7ce15ba92b" />  
+
+
 
 
 
