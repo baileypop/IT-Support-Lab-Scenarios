@@ -125,6 +125,8 @@ On the Windows 11 client machine, open System Properties (sysdm.cpl) and click C
 
 <img width="322" height="388" alt="4 1" src="https://github.com/user-attachments/assets/5b932349-5ecb-47bf-bc02-462c1b050b60" />  
 
+**The DNS server on this client must point to the domain controller IP address for the domain join to resolve correctly.**  
+
 
 #### Step 4.2 - Confirm Domain Join in System Properties  
 
@@ -133,9 +135,114 @@ After the restart, open System Properties and confirm the machine shows the full
 <img width="407" height="465" alt="4 2" src="https://github.com/user-attachments/assets/0b59249b-58c0-417b-a698-cc7ce15ba92b" />  
 
 
+#### Step 4.3 - Verify Device Appears in ADUC Computers Container  
+
+Return to Active Directory Users and Computers on the domain controller. Navigate to the Computers container and confirm WIN11_CLIENT01 appears as a Computer object.  
+
+<img width="753" height="529" alt="4 3" src="https://github.com/user-attachments/assets/7f5c03d4-e96a-4814-8518-c5a2c68bf935" />  
+
+### Phase 5: Configure Email Access  
+
+#### Step 5.1 - Document the Microsoft 365 Email Provisioning Workflow  
+
+Email provisioning in Microsoft 365 requires actions in the M365 admin centre rather than in Active Directory. The workflow was documented rather than executed in this lab VM because a live M365 tenant was not available in the test environment.  
+
+| Step | Action | Performed by |
+| --- | --- | ---|
+| 1 | IT submits license request to M365 admin | IT Support |
+| 2 | Admin assigns Microsoft 365 license to danita.widmar@[domain] | M365 Admin |
+| 3 | Exchange Online mailbox created automatically | automatic |
+| 4 | IT verifies access via Outlook or OWA | IT Support |
+| 5 | Confirmation sent to manager Esther Jordan | IT Support |  
 
 
+### Phase 6: Install Required Software  
 
+#### Step 6.1 - Install Microsoft Teams, WPS Office, and Supporting Applications  
+
+Install all applications listed on the onboarding ticket. Verify each installation in Settings > Apps > Installed Apps.
+
+### Phase 7: Create Shared Folder and Map Network Drive  
+
+#### Step 7.1 - Confirm Finance_Share Folder is Shared on the File Server  
+
+On the file server, navigate to the Finance_Share folder properties and confirm it is shared with the correct network path.  
+
+<img width="362" height="477" alt="7 1" src="https://github.com/user-attachments/assets/a6161261-a196-435f-88f1-0be0ba096f55" />  
+
+
+#### Step 7.2 - Map the Network Drive on the Client Machine  
+
+On WIN11_CLIENT01, map the Finance_Share as a persistent network drive. The drive is mapped to X: from \[dc_ip]\Finance_Share.  
+
+<img width="785" height="592" alt="7 2" src="https://github.com/user-attachments/assets/bb44952c-1ace-4001-ac88-b3e1912a9221" />  
+
+
+### Phase 8: Produce the Day One Handover Note  
+
+#### Step 8.1 - Create the Handover Document for the New User  
+
+Before the user's first day, produce a handover note summarizing everything that has been provisioned. This document is given to the user and a copy is attached to the ticket.  
+
+<img width="493" height="634" alt="8 1" src="https://github.com/user-attachments/assets/84db03aa-94c1-4fc1-b649-8656e2171b66" />  
+
+## Offboarding  
+
+### Phase 9: Receive and Log the Offboarding Request  
+
+#### Step 9.1 - Review the Offboarding Ticket
+
+The offboarding request is submitted by Esther Jordan (manager) on June 29 2026. Last day of employment is June 30 2026. All actions must be completed by end of business on the last day.  
+
+<img width="477" height="485" alt="9 1" src="https://github.com/user-attachments/assets/c7f439e7-ef3d-4320-974b-5f52c1e0720a" />  
+
+### Phase 10: Disable the Active Directory Account  
+
+#### Step 10.1 - Disable Danita Widmar's Account in ADUC  
+
+Right-click on Danita Widmar's account in ADUC and select Disable Account. Confirm the action when prompted.  
+
+<img width="308" height="149" alt="10 1" src="https://github.com/user-attachments/assets/d3c74b92-30a7-4a68-8bb5-fcc044c8e985" />  
+
+
+### Phase 11: Remove Group Memberships  
+
+#### Step 11.1 - Remove Danita Widmar from Finance_Department Group  
+
+Open the Finance_Department group properties. Navigate to the Members tab. Select Maria Shima and click Remove. Confirm when prompted.
+
+<img width="395" height="448" alt="11 1" src="https://github.com/user-attachments/assets/b5af621f-fc89-40ec-a6b0-5b84c004cace" />  
+
+
+### Phase 12: Reset the Password  
+
+#### Step 12.1 - Reset Password and Configure Account Options  
+
+Open Danita Widmar's account properties in ADUC and navigate to the Account tab. Set a strong temporary password and ensure the User must change password at next logon checkbox is ticked. This prevents the account from being reactivated with the original credentials if it is accidentally re-enabled in the future.
+
+<img width="412" height="538" alt="12 1" src="https://github.com/user-attachments/assets/3d627394-829e-41fe-90bb-423158b3919f" />  
+
+
+### Phase 13: Collect the Device and Complete the Hardware Checklist
+
+#### Step 13.1 - Complete the Device Collection Checklist
+
+Before the device is wiped and redeployed, complete a physical hardware checklist confirming what was returned, the condition of each item, and who collected it.  
+
+<img width="510" height="571" alt="13 1" src="https://github.com/user-attachments/assets/0d3afdb5-c326-46ae-9740-54294a3abb83" />  
+
+
+## Troubleshooting Reference  
+
+| Situation | Action | Common Mistake |
+| --- | --- | --- |
+| New user cannot log in on first day | Confirm account is enabled, password not expired, and device is domain joined | Checking the laptop before checking the AD account |
+| Domain join fails during device setup | Confirm DNS on the client points to the domain controller, not a public DNS server | Attempting to join domain with public DNS (8.8.8.8) configured |
+| User cannot access Finance_Share | Confirm Finance_Department group membership and NTFS permissions on the share | Checking only the share permissions, ignoring NTFS permissions |
+| Offboarding request missing manager authorization | Return the ticket to the requester — do not disable the account without confirmed authorization | Disabling account based on verbal instruction without written authorization |
+| Account disabled but user still has active sessions | Force sign-out via Active Directory or M365 admin centre - disabling AD blocks new logins but does not terminate active sessions | Assuming account disable ends all active sessions immediately |
+| Device not visible in ADUC after domain join | Confirm the domain join completed and a restart occurred - computers appear in ADUC after first reboot | Looking in ADUC before the client machine has rebooted |
+| Shared drive not accessible after mapping | Confirm group membership is active and NTFS permissions include the security group — mapping a drive without correct permissions shows the drive but denies access | Mapping the drive letter correctly but assigning permissions to the individual user instead of the group |  
 
 
 
