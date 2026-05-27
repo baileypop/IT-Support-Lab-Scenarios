@@ -145,7 +145,7 @@ Return to Active Directory Users and Computers on the domain controller. Navigat
 
 #### Step 5.1 - Document the Microsoft 365 Email Provisioning Workflow  
 
-Email provisioning in Microsoft 365 requires actions in the M365 admin centre rather than in Active Directory. The workflow was documented rather than executed in this lab VM because a live M365 tenant was not available in the test environment.  
+Email provisioning in Microsoft 365 requires actions in the M365 admin centre rather than in Active Directory. The workflow was documented but not executed in this lab VM because a live M365 tenant was not available in the test environment.  
 
 | Step | Action | Performed by |
 | --- | --- | ---|
